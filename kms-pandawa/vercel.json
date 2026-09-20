@@ -1,0 +1,11 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "vite",
+  "rewrites": [
+    { "source": "/assets/:path*", "destination": "/assets/:path*" },
+    { "source": "/sw.js", "destination": "/sw.js" },
+    { "source": "/workbox-:path*", "destination": "/workbox-:path*" },
+    { "source": "/manifest.webmanifest", "destination": "/manifest.webmanifest" },
+    { "source": "/((?!assets).*)", "destination": "/index.html" }
+  ]
+}
