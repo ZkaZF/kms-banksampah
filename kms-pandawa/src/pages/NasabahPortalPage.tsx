@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Card, Badge, Avatar, Button, Tabs, Tab } from '../components/ui';
+import { Card, Badge, Avatar, Button, Tabs, Tab, Modal } from '../components/ui';
 import { useData } from '../hooks/useData';
 import { useAuth } from '../hooks/useAuth';
 import { formatRupiah, formatDate, formatRelativeTime, formatNumber, cn } from '../lib/utils';
@@ -22,6 +22,7 @@ export function NasabahPortalPage() {
 
   const [activeTab, setActiveTab] = useState<'saldo' | 'riwayat' | 'sop'>('saldo');
   const [refreshing, setRefreshing] = useState(false);
+  const [logoutModalOpen, setLogoutModalOpen] = useState(false);
 
   const nasabah = user ? nasabahList.find(n => n.nama === user.nama) : null;
   const riwayat = nasabah ? getTransaksiByNasabah(nasabah.id) : [];
@@ -77,7 +78,7 @@ export function NasabahPortalPage() {
                 </svg>
               </button>
               <Button variant="secondary" size="sm" onClick={handleRefresh} loading={refreshing} leftIcon={<RefreshCw className="w-4 h-4" />} className="hidden sm:inline-flex">Refresh</Button>
-              <Button variant="ghost" size="sm" onClick={logout} leftIcon={<User className="w-4 h-4" />}>Keluar</Button>
+              <Button variant="ghost" size="sm" onClick={() => setLogoutModalOpen(true)} leftIcon={<User className="w-4 h-4" />}>Keluar</Button>
             </div>
           </div>
 
@@ -271,6 +272,37 @@ export function NasabahPortalPage() {
           )}
         </div>
       </div>
+
+      <Modal isOpen={logoutModalOpen} onClose={() => setLogoutModalOpen(false)} title="Keluar & Evaluasi" size="md">
+        <div className="space-y-4">
+          <p className="text-text-secondary text-sm">
+            Terima kasih telah menggunakan/mencoba KMS Pandawa Berjaya! Sebelum Anda keluar, mohon kesediaannya untuk mengisi survei evaluasi singkat.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3 pt-4">
+            <Button
+              onClick={() => {
+                window.open('https://docs.google.com/forms/d/e/1FAIpQLScx77tgx-dwE7cXjmnBP2nS1OPHNlufZ3qytmRNr0fUDLVIWw/viewform?usp=dialog', '_blank');
+                setLogoutModalOpen(false);
+                logout();
+              }}
+              className="flex-1"
+              variant="primary"
+            >
+              Isi Survei GForm
+            </Button>
+            <Button
+              onClick={() => {
+                setLogoutModalOpen(false);
+                logout();
+              }}
+              variant="ghost"
+              className="sm:w-auto"
+            >
+              Lewati & Keluar
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </>
   );
 }
