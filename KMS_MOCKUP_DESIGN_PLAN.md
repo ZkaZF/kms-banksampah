@@ -366,14 +366,14 @@
 
 | Layer | Technology | Rationale |
 |-------|------------|-----------|
-| **Framework** | **Next.js 15 (App Router, RSC)** | Server Components = fast initial load on low-end phones; built-in image optimization; easy deployment to Vercel (free tier) |
+| **Framework** | **React 19 + Vite** | Fast HMR, small bundle size, SPA ideal for offline-first PWA, built-in deployment to Vercel (free tier) |
 | **Styling** | **Tailwind v4** | Zero-config, tiny bundle, dark mode native, utility-first matches team skill level |
 | **Components** | **shadcn/ui** (copy-paste, not npm package) | Own the code, accessible by default (Radix), customizable, no vendor lock-in |
-| **Icons** | **@phosphor-icons/react** | Consistent stroke, tree-shakable, 7000+ icons |
-| **Animation** | **Motion (framer-motion v11+)** | `useReducedMotion`, `whileInView`, layout animations; lightweight |
-| **Forms** | **React Hook Form + Zod** | Performant, validation schemas shared client/server |
-| **State** | **Zustand** (global) + **React Query (TanStack Query)** (server) | Minimal boilerplate; RQ handles caching, sync, offline queue |
-| **PWA** | **next-pwa** (Workbox) | Offline-first, installable, background sync for scanner queue |
+| **Icons** | **Lucide React** | Consistent stroke, tree-shakable, beautiful modern icons |
+| **Animation** | **Tailwind `animate-in`** | Native CSS animations, lightweight, no extra library overhead |
+| **Forms** | **React Hook Form** | Performant form state management |
+| **State** | **React Context** (global) + **Custom Hooks** | Minimal boilerplate; custom implementation handles sync, offline queue |
+| **PWA** | **vite-plugin-pwa** (Workbox) | Offline-first, installable, background sync for scanner queue |
 | **QR/Barcode** | **html5-qrcode** (wrapper around ZXing) | Works in browser, no native dependency, supports camera selection |
 | **Charts** | **Recharts** (lazy-loaded) | Only on dashboard/laporan; tree-shakable |
 | **PDF Export** | **@react-pdf/renderer** (server) + **jspdf** (client) | Server for reports, client for struk nasabah |
@@ -431,45 +431,42 @@ syncLog/
 ## 6. IMPLEMENTATION PLAN (3-Week Sprint → Mockup + Usability)
 
 ### Sprint 1: Foundation & Core Screens (Week 3, Day 1-3)
-| Task | Owner | Output |
-|------|-------|--------|
-| Init Next.js 15 + Tailwind v4 + shadcn/ui | Dev | Running repo, component library |
-| Setup Firebase project (Auth, Firestore, Hosting) | Dev | Config files, security rules draft |
-| Build Layout + Navigation (responsive, dark mode) | Dev | `layout.tsx`, `Sidebar`, `Header`, `ThemeProvider` |
-| Build Login + Role Select screen | Dev | `/login` page, auth flow, role redirect |
-| Build Dashboard skeleton + metric cards | Dev | `/dashboard` with static data |
-| **Deliverable:** Clickable prototype (Figma/Code) for Dashboard + Login | | |
+| Task | Owner | Output | Status |
+|------|-------|--------|--------|
+| Init Vite + React + Tailwind v4 | Dev | Running repo, component library | ✅ Selesai |
+| Setup Firebase project (Auth, Firestore, Hosting) | Dev | Config files, security rules draft | ✅ Selesai |
+| Build Layout + Navigation (responsive, dark mode) | Dev | `layout.tsx`, `Sidebar`, `Header` | ✅ Selesai |
+| Build Login + Role Select screen | Dev | `/login` page, auth flow, role redirect | ✅ Selesai |
+| Build Dashboard skeleton + metric cards | Dev | `/dashboard` with static data | ✅ Selesai |
 
 ### Sprint 2: Core Features — Transaksi & Nasabah (Week 3, Day 4-6)
-| Task | Owner | Output |
-|------|-------|--------|
-| Build Input Transaksi (scan QR, multi-select sampah, harga auto) | Dev | `/transaksi/baru` — core Capture flow |
-| Build Nasabah CRUD + Detail + Saldo Sync indicator | Dev | `/nasabah`, `/nasabah/:id` |
-| Build Portal Nasabah (public, shareable link) | Dev | `/nasabah/:id` public view |
-| Integrate html5-qrcode for Scanner mode | Dev | `/scan` PWA page |
-| Setup React Query + offline mutation queue | Dev | Optimistic updates, background sync |
-| **Deliverable:** End-to-end flow: Scan → Input → Save → View Portal | | |
+| Task | Owner | Output | Status |
+|------|-------|--------|--------|
+| Build Input Transaksi (multi-select sampah, harga auto) | Dev | `/transaksi` — core Capture flow | ✅ Selesai |
+| Build Nasabah CRUD + Detail | Dev | `/nasabah` | ✅ Selesai |
+| Build Portal Nasabah (public, shareable link) | Dev | `/portal` | ✅ Selesai |
+| Integrate html5-qrcode for Scanner mode | Dev | `/scan` PWA page | ✅ Selesai |
+| Setup Offline mutation queue via IndexedDB | Dev | Optimistic updates, background sync | ✅ Selesai |
 
 ### Sprint 3: Knowledge Layer & Polish (Week 3, Day 7-9)
-| Task | Owner | Output |
-|------|-------|--------|
-| Build Master Harga (CRUD, CSV import/export) | Dev | `/master/harga` |
-| Build SOP Library (rich text, images, versioning) | Dev | `/master/sop`, `/sop/:id` |
-| Build Broadcast WA (template, target filter, preview, send via Fonnte) | Dev | `/broadcast` |
-| Build Laporan (bulanan, per RT, export PDF/Excel) | Dev | `/laporan` |
-| PWA config: manifest, service worker, offline queue | Dev | Installable, offline-capable |
-| Polish: loading states, error boundaries, empty states, a11y audit | Dev | WCAG AA checklist |
-| **Deliverable:** Full clickable prototype for usability testing | | |
+| Task | Owner | Output | Status |
+|------|-------|--------|--------|
+| Build Master Harga (CRUD) | Dev | `/katalog` | ✅ Selesai |
+| Build SOP Library (rich text, images, versioning) | Dev | `/sop` | ✅ Selesai |
+| Build Broadcast WA (template, target filter, preview) | Dev | `/broadcast` | ✅ Selesai |
+| Build Laporan (bulanan, per RT, export) | Dev | `/laporan` | ✅ Selesai |
+| PWA config: manifest, service worker, offline queue | Dev | Installable, offline-capable | ✅ Selesai |
+| Polish: loading states, error boundaries, dark mode | Dev | WCAG AA checklist | ✅ Selesai |
 
 ### Sprint 4: Usability Testing & Iteration (Week 3, Day 10-12)
-| Task | Owner | Output |
-|------|-------|--------|
-| Recruit 5-8 respondents (2 pengurus, 2 relawan, 2 nasabah, 1 ketua) | Anggota 3 | Consent forms, test script |
-| Conduct moderated usability sessions (45 min each) | Anggota 3 | Recordings, notes, SUS scores |
-| Analyze findings: task success rate, time, errors, satisfaction | Anggota 3 | Usability report |
-| Prioritize & implement quick fixes (high impact, low effort) | Dev | Patched prototype |
-| Prepare final mockup screenshots + flow diagrams for makalah | Anggota 3 | Lampiran mockup PDF |
-| Compile final makalah (Anggota 3) | All | PDF siap submit |
+| Task | Owner | Output | Status |
+|------|-------|--------|--------|
+| Recruit 5-8 respondents (2 pengurus, 2 relawan, 2 nasabah, 1 ketua) | Anggota 3 | Consent forms, test script | 🔄 Ongoing |
+| Conduct moderated usability sessions (45 min each) | Anggota 3 | Recordings, notes, SUS scores | ⏳ Pending |
+| Analyze findings: task success rate, time, errors, satisfaction | Anggota 3 | Usability report | ⏳ Pending |
+| Prioritize & implement quick fixes (high impact, low effort) | Dev | Patched prototype | ⏳ Pending |
+| Prepare final mockup screenshots + flow diagrams for makalah | Anggota 3 | Lampiran mockup PDF | ⏳ Pending |
+| Compile final makalah (Anggota 3) | All | PDF siap submit | ⏳ Pending |
 | **Deliverable:** Usability report + Final mockup + Makalah PDF | | |
 
 ---
@@ -575,83 +572,49 @@ TOP 5 FINDINGS & FIXES
 
 ---
 
-## 10. FILE STRUCTURE (Next.js 15 App Router)
+## 10. FILE STRUCTURE (Vite + React SPA)
 
 ```
-src/
-├── app/
-│   ├── layout.tsx                 # Root layout, providers, fonts
-│   ├── page.tsx                   # Redirect to /login
-│   ├── login/
-│   │   └── page.tsx               # Login + role select
-│   ├── dashboard/
-│   │   ├── page.tsx               # Dashboard pengurus
-│   │   ├── transaksi/
-│   │   │   ├── baru/page.tsx      # Input transaksi (Capture)
-│   │   │   └── riwayat/page.tsx   # List transaksi
-│   │   ├── nasabah/
-│   │   │   ├── page.tsx           # CRUD nasabah
-│   │   │   └── [id]/page.tsx      # Detail nasabah
-│   │   ├── master/
-│   │   │   ├── harga/page.tsx     # Master harga
-│   │   │   └── sop/page.tsx       # SOP library
-│   │   ├── laporan/page.tsx       # Laporan bulanan
-│   │   ├── pengurus/page.tsx      # Kelola akses
-│   │   └── broadcast/page.tsx     # WA broadcast
-│   ├── scan/
-│   │   └── page.tsx               # Scanner mode (PWA)
-│   ├── nasabah/
-│   │   └── [id]/page.tsx          # Portal nasabah (public)
-│   ├── sop/
-│   │   └── [id]/page.tsx          # Detail SOP (public)
-│   └── settings/page.tsx          # Profil, theme, notif
-├── components/
-│   ├── ui/                        # shadcn/ui components (Button, Card, Table, Dialog, etc.)
-│   ├── layout/
-│   │   ├── Sidebar.tsx
-│   │   ├── Header.tsx
-│   │   └── MobileNav.tsx
-│   ├── forms/
-│   │   ├── TransaksiForm.tsx
-│   │   ├── NasabahForm.tsx
-│   │   ├── HargaForm.tsx
-│   │   └── SOPForm.tsx
-│   ├── scanner/
-│   │   └── QRScanner.tsx
-│   ├── nasabah/
-│   │   ├── SaldoCard.tsx
-│   │   ├── RiwayatTable.tsx
-│   │   └── ShareButton.tsx
-│   └── broadcast/
-│       └── BroadcastWizard.tsx
-├── lib/
-│   ├── firebase/
-│   │   ├── client.ts              # Firebase client config
-│   │   ├── server.ts              # Firebase admin (server actions)
-│   │   └── auth.ts                # Auth helpers
-│   ├── query/
-│   │   ├── client.ts              # React Query provider
-│   │   └── hooks/                 # Custom hooks: useNasabah, useTransaksi, useHarga, useSOP
-│   ├── wa/
-│   │   └── fonnte.ts              # Fonnte API wrapper
-│   ├── utils/
-│   │   ├── format.ts              # formatRupiah, formatTanggal, generateKode
-│   │   ├── validation.ts          # Zod schemas
-│   │   └── offline.ts             # IndexedDB queue helpers
-│   └── constants/
-│       ├── roles.ts
-│       ├── jenisSampah.ts
-│       └── routes.ts
-├── hooks/
-│   ├── useAuth.ts
-│   ├── useTheme.ts
-│   ├── useReducedMotion.ts
-│   └── useOnlineStatus.ts
-├── types/
-│   ├── index.ts                   # Shared TypeScript interfaces
-│   └── firebase.ts                # Firestore doc types
-└── styles/
-    └── globals.css                # Tailwind v4 + CSS variables
+kms-pandawa/
+├── src/
+│   ├── components/
+│   │   ├── ui/                        # shadcn/ui components
+│   │   └── layout/
+│   │       ├── Sidebar.tsx
+│   │       ├── Header.tsx
+│   │       └── Layout.tsx
+│   ├── context/
+│   │   ├── AuthContext.tsx            # Autentikasi & Role
+│   │   └── DataContext.tsx            # Manipulasi data (CRUD)
+│   ├── hooks/
+│   │   ├── useAuth.ts
+│   │   └── useData.ts
+│   ├── lib/
+│   │   ├── firebase.ts                # Firebase config
+│   │   ├── offline.ts                 # IndexedDB Background Sync
+│   │   └── utils.ts
+│   ├── pages/
+│   │   ├── LoginPage.tsx              # Login + Role Select
+│   │   ├── DashboardPage.tsx          # Statistik
+│   │   ├── TransaksiPage.tsx          # Input Penimbangan
+│   │   ├── NasabahPage.tsx            # Data Nasabah
+│   │   ├── KatalogPage.tsx            # Harga Pengepul
+│   │   ├── SopPage.tsx                # SOP Pemilahan
+│   │   ├── LaporanPage.tsx            # Laporan
+│   │   ├── BroadcastPage.tsx          # Push Notifikasi
+│   │   ├── ScannerPage.tsx            # Kamera QR
+│   │   ├── NasabahPortalPage.tsx      # Portal Nasabah (Auth)
+│   │   └── PublicNasabahPortal.tsx    # Portal Public
+│   ├── types/
+│   │   └── index.ts                   # Interfaces
+│   ├── App.tsx                        # React Router DOM config
+│   ├── main.tsx                       # Entry point
+│   └── index.css                      # Tailwind v4 globals
+├── public/
+│   └── icons/                         # PWA Icons
+├── .env.example
+├── vercel.json                        # Vercel SPA Routing configuration
+└── vite.config.ts                     # Vite + PWA configs
 ```
 
 ---
@@ -659,32 +622,22 @@ src/
 ## 11. QUICK START COMMANDS
 
 ```bash
-# 1. Init project
-npx create-next-app@latest kms-pandawa --typescript --tailwind --eslint --app --src-dir --import-alias "@/*" --use-npm
-cd kms-pandawa
+# 1. Install dependencies
+npm install
 
-# 2. Install dependencies
-npm install firebase @tanstack/react-query zustand react-hook-form @hookform/resolvers zod
-npm install @phosphor-icons/react motion date-fns
-npm install html5-qrcode @react-pdf/renderer jspdf xlsx
-npm install -D @types/node
+# 2. Setup env variables
+cp .env.example .env.local
+# Edit file .env.local
 
-# 3. shadcn/ui (manual copy, not npx)
-# Copy components from https://ui.shadcn.com/docs/components
-# Start with: button, card, input, label, select, table, dialog, tabs, toast, avatar, dropdown-menu, sidebar
+# 3. Generate PWA Icons
+node generate-icons.mjs
 
-# 4. Firebase setup
-# - Create project at console.firebase.google.com
-# - Enable Auth (Email/Password + Anonymous)
-# - Create Firestore database (start in test mode)
-# - Enable Hosting
-# - Copy config to src/lib/firebase/client.ts
-
-# 5. Run dev
+# 4. Start Development Server
 npm run dev
 
-# 6. Deploy preview
-npx vercel --prod
+# 5. Build for Production
+npm run build
+npm run preview
 ```
 
 ---
