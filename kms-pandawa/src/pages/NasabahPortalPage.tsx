@@ -55,7 +55,28 @@ export function NasabahPortalPage() {
               <p className="text-text-secondary">Halo, {nasabah.nama}! Kelola tabungan sampah Anda di sini.</p>
             </div>
             <div className="flex items-center gap-3">
-              <Button variant="secondary" size="sm" onClick={handleRefresh} loading={refreshing} leftIcon={<RefreshCw className="w-4 h-4" />}>Refresh</Button>
+              <button
+                onClick={() => {
+                  const isDark = document.documentElement.classList.contains('dark');
+                  if (isDark) {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('theme', 'light');
+                  } else {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('theme', 'dark');
+                  }
+                }}
+                className="p-2 text-text-secondary hover:text-text-primary hover:bg-surface-elevated rounded-lg transition-colors border border-transparent hover:border-border/50"
+                title="Toggle theme"
+              >
+                <svg className="w-5 h-5 hidden dark:block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+                <svg className="w-5 h-5 block dark:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                </svg>
+              </button>
+              <Button variant="secondary" size="sm" onClick={handleRefresh} loading={refreshing} leftIcon={<RefreshCw className="w-4 h-4" />} className="hidden sm:inline-flex">Refresh</Button>
               <Button variant="ghost" size="sm" onClick={logout} leftIcon={<User className="w-4 h-4" />}>Keluar</Button>
             </div>
           </div>

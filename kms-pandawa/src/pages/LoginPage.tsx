@@ -64,6 +64,7 @@ export function LoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const { login, loading } = useAuth();
+  const { nasabahList } = useData();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -180,11 +181,28 @@ export function LoginPage() {
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-[38px] text-text-muted hover:text-text-primary transition-colors"
-                        aria-label={showPassword ? 'Sembunyikan password' : 'Tampilkan password'}
+                        className="absolute right-3 top-9 text-text-muted hover:text-text-primary transition-colors"
                       >
                         {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                       </button>
+                    </div>
+                  )}
+
+                  {selectedRole === 'nasabah' && nasabahList.length > 0 && (
+                    <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-lg p-3 mt-2">
+                      <p className="text-xs text-amber-800 dark:text-amber-300 mb-1 font-medium">Contoh Nasabah untuk Demo:</p>
+                      <div className="flex flex-wrap gap-1.5">
+                        {nasabahList.slice(0, 4).map((n) => (
+                          <button
+                            key={n.id}
+                            type="button"
+                            onClick={() => setName(n.nama)}
+                            className="text-xs px-2 py-1 bg-white dark:bg-black/20 border border-amber-200 dark:border-amber-700 rounded-md hover:bg-amber-100 dark:hover:bg-amber-900 transition-colors text-left"
+                          >
+                            {n.nama}
+                          </button>
+                        ))}
+                      </div>
                     </div>
                   )}
 
