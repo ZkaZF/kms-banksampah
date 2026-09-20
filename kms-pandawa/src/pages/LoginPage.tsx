@@ -82,7 +82,7 @@ export function LoginPage() {
 
     try {
       await login(selectedRole, name.trim());
-      navigate('/dashboard');
+      navigate(selectedRole === 'nasabah' ? '/portal' : '/dashboard');
     } catch {
       setError('Gagal masuk. Silakan coba lagi.');
     }

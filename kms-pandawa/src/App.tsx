@@ -85,7 +85,7 @@ function ProtectedRoute({ allowedRoles }: { allowedRoles?: string[] }) {
   }
 
   if (allowedRoles && !allowedRoles.includes(user.role)) {
-    return <Navigate to="/dashboard" replace />;
+    return <Navigate to={user.role === 'nasabah' ? '/portal' : '/dashboard'} replace />;
   }
 
   return <Outlet />;
