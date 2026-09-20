@@ -1,7 +1,5 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "cd kms-pandawa && npm install && npm run build",
-  "outputDirectory": "kms-pandawa/dist",
   "framework": "vite",
   "rewrites": [
     { "source": "/assets/:path*", "destination": "/assets/:path*" },
