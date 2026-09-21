@@ -121,73 +121,70 @@ export function LoginPage() {
       <div className="w-full max-w-4xl">
         <div className="grid lg:grid-cols-2 gap-8 items-center">
           <div className="lg:order-2">
-            <div className="text-center lg:text-left mb-6">
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary/10 mb-4">
-                <svg className="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="text-center mb-6">
+              <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-primary/10 mb-4">
+                <svg className="w-7 h-7 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h1 className="text-3xl sm:text-4xl font-bold text-text-primary mb-2">
+              <h1 className="text-2xl sm:text-3xl font-bold text-text-primary mb-1">
                 Bank Sampah Pandawa Berjaya
               </h1>
-              <p className="text-text-secondary text-base">
-                Sistem Informasi & Knowledge Management<br />
-                Pilar Smart Environment - Kota Semarang
+              <p className="text-text-secondary text-sm">
+                Sistem Informasi & Knowledge Management
               </p>
             </div>
 
-            {/* Role selector compact — visible only on mobile */}
-            <div className="lg:hidden mb-5">
-              <p className="text-sm font-semibold text-text-secondary mb-2">Masuk sebagai:</p>
-              <div className="grid grid-cols-3 gap-2" role="radiogroup" aria-label="Pilih peran login">
-                {roles.map(role => (
-                  <button
-                    key={role.key}
-                    type="button"
-                    onClick={() => setSelectedRole(role.key)}
-                    className={cn(
-                      'flex flex-col items-center gap-1.5 p-3 rounded-xl border-2 transition-all duration-200 text-center',
-                      selectedRole === role.key
-                        ? `${role.borderSelected} bg-surface-elevated shadow-md`
-                        : 'border-border hover:border-primary/50'
-                    )}
-                    role="radio"
-                    aria-checked={selectedRole === role.key}
-                    aria-label={role.title}
-                  >
-                    <div className={cn('w-9 h-9 rounded-lg flex items-center justify-center', role.color)}>
-                      <role.icon className="w-5 h-5 text-white" aria-hidden="true" />
-                    </div>
-                    <span className={cn('text-xs font-semibold leading-tight', selectedRole === role.key ? role.text : 'text-text-secondary')}>
-                      {role.key === 'petugas' ? 'Petugas' : role.key === 'admin' ? 'Admin' : 'Nasabah'}
-                    </span>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <Card className={cn(roleConfig.bg, roleConfig.hover, 'border-2 transition-all duration-200')}>
-              <div className="p-6">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className={cn('w-12 h-12 rounded-xl flex items-center justify-center', roleConfig.color)}>
-                    <Icon className="w-6 h-6 text-white" aria-hidden="true" />
-                  </div>
-                  <div>
-                    <h2 className="text-xl font-bold text-text-primary">{roleConfig.title}</h2>
-                    <p className="text-sm font-medium text-text-secondary">{roleConfig.description}</p>
+            <Card className="border border-border shadow-xl">
+              <div className="p-5 sm:p-6">
+                {/* Role Selector — selalu tampil di semua ukuran layar */}
+                <div className="mb-5">
+                  <p className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-2">Masuk sebagai</p>
+                  <div className="grid grid-cols-3 gap-2" role="radiogroup" aria-label="Pilih peran login">
+                    {roles.map(role => (
+                      <button
+                        key={role.key}
+                        type="button"
+                        onClick={() => { setSelectedRole(role.key); setError(''); }}
+                        className={cn(
+                          'flex flex-col items-center gap-1.5 py-3 px-2 rounded-xl border-2 transition-all duration-200 text-center',
+                          selectedRole === role.key
+                            ? `${role.borderSelected} bg-surface-elevated shadow-md`
+                            : 'border-border bg-surface hover:border-primary/40'
+                        )}
+                        role="radio"
+                        aria-checked={selectedRole === role.key}
+                        aria-label={role.title}
+                      >
+                        <div className={cn('w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0', role.color)}>
+                          <role.icon className="w-5 h-5 text-white" aria-hidden="true" />
+                        </div>
+                        <span className={cn(
+                          'text-xs font-semibold leading-tight',
+                          selectedRole === role.key ? role.text : 'text-text-secondary'
+                        )}>
+                          {role.key === 'petugas' ? 'Petugas' : role.key === 'admin' ? 'Admin' : 'Nasabah'}
+                        </span>
+                        {selectedRole === role.key && (
+                          <span className={cn('text-[10px] font-medium leading-none', role.text)}>✓ Dipilih</span>
+                        )}
+                      </button>
+                    ))}
                   </div>
                 </div>
 
-                <ul className="space-y-3 mb-6" role="list">
-                  {roleConfig.features.map((feature, i) => (
-                    <li key={i} className="flex items-center gap-3 text-sm font-medium text-text-secondary">
-                      <CheckCircle2 className={cn('w-5 h-5 flex-shrink-0', roleConfig.text)} aria-hidden="true" />
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
+                {/* Deskripsi role yang dipilih */}
+                <div className={cn('flex items-center gap-3 p-3 rounded-lg mb-4 border', roleConfig.bg)}>
+                  <div className={cn('w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0', roleConfig.color)}>
+                    <Icon className="w-5 h-5 text-white" aria-hidden="true" />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="font-semibold text-sm text-text-primary">{roleConfig.title}</p>
+                    <p className="text-xs text-text-secondary truncate">{roleConfig.description}</p>
+                  </div>
+                </div>
 
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={handleSubmit} className="space-y-3">
                   <Input
                     label="Nama Lengkap"
                     placeholder="Masukkan nama Anda"
@@ -220,15 +217,15 @@ export function LoginPage() {
                   )}
 
                   {selectedRole === 'nasabah' && nasabahList.length > 0 && (
-                    <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-lg p-3 mt-2">
-                      <p className="text-xs text-amber-800 dark:text-amber-300 mb-1 font-medium">Contoh Nasabah untuk Demo:</p>
+                    <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-lg p-3">
+                      <p className="text-xs text-amber-800 dark:text-amber-300 mb-1.5 font-medium">Contoh Nasabah untuk Demo:</p>
                       <div className="flex flex-wrap gap-1.5">
                         {nasabahList.slice(0, 4).map((n) => (
                           <button
                             key={n.id}
                             type="button"
                             onClick={() => setName(n.nama)}
-                            className="text-xs px-2 py-1 bg-white dark:bg-black/20 border border-amber-200 dark:border-amber-700 rounded-md hover:bg-amber-100 dark:hover:bg-amber-900 transition-colors text-left"
+                            className="text-xs px-2 py-1 bg-white dark:bg-black/20 border border-amber-200 dark:border-amber-700 rounded-md hover:bg-amber-100 dark:hover:bg-amber-900 transition-colors"
                           >
                             {n.nama}
                           </button>
@@ -250,7 +247,7 @@ export function LoginPage() {
                   </Button>
                 </form>
 
-                <p className="mt-4 text-center text-xs text-text-muted">
+                <p className="mt-3 text-center text-xs text-text-muted">
                   Demo: Gunakan nama apa saja. Password opsional untuk nasabah.
                 </p>
               </div>
